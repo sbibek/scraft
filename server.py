@@ -13,7 +13,7 @@ serverPort = SYN_REQ[0].dport
 clientIp = SYN_REQ[0][IP].src
 serverIp = SYN_REQ[0][IP].dst
 
-log(clientIp, serverIp, SYN_REQ[0].flags, SYN_REQ[0].seq, SYN_REQ[0].ack)
+log(clientIp, serverIp, SYN_REQ[0][TCP].flags, SYN_REQ[0].seq, SYN_REQ[0].ack)
 
 ip = IP(src=serverIp, dst=clientIp)
 
