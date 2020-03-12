@@ -13,7 +13,7 @@ serverPort = SYN_REQ[0].dport
 clientIp = SYN_REQ[0][IP].src
 serverIp = SYN_REQ[0][IP].dst
 
-# log this response
+# log this respons
 log(clientIp, serverIp, SYN_REQ[0][TCP].flags, SYN_REQ[0].seq, SYN_REQ[0].ack)
 
 ip = IP(src=serverIp, dst=clientIp)
@@ -22,7 +22,7 @@ ip = IP(src=serverIp, dst=clientIp)
 log(serverIp, clientIp, "SA", SYN_REQ[0].seq, SYN_REQ[0].seq+1) 
 # we will reply with synack, seq = syn.seq, ack = syn.seq +1, options (mss,1460)
 SYNACK = TCP(sport=serverPort, dport=clientPort, flags="SA",
-             seq=SYN_REQ[0].seq, ack=SYN_REQ[0].seq + 1, options=[('MSS', 1460)])
+             seq=12345, ack=SYN_REQ[0].seq + 1, options=[('MSS', 1460)])
 ack_response = sr1(ip/SYNACK)
 
 # log this response
@@ -34,10 +34,10 @@ log(clientIp, serverIp, ack_response[0][TCP].flags, ack_response[0].seq, ack_res
 
 ## now lets close the connection
 fin_seq = ack_response[0].ack
-fin_ack = ack_response[0].seq + 1
+fin_ack = ack_response[0].seq
 
 
-FIN=TCP(sport=serverPort, dport=clientPort, flags="FA", seq=fin_seq, ack=fin_ack)
+FIN=TCP(sport=serverPort, dport=clientPort, flags="FA", seq=fin_seq, ack=fin_ack,options=[('MSS', 1460)] )
 FINACK=sr1(ip/FIN)
-LASTACK=TCP(sport=serverPort, dport=clientPort, flags="A", seq=FINACK.ack, ack=FINACK.seq + 1)
+LASTACK=TCP(sport=serverPort, dport=clientPort, flags="A", seq=FINACK.ack, ack=FINACK.seq + 1, options=[('MSS', 1460)])
 send(ip/LASTACK)
