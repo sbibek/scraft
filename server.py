@@ -1,5 +1,9 @@
 from scapy.all import *
 
+
+def log(_from, _to, msg, seq, ack) :
+    print("{} {} {} {} {}".format(_from, _to, msg, seq, ack))
+
 # first sniff for the syn request
 SYN_REQ = sniff(
     count=1, filter="tcp and port 3333")
@@ -8,6 +12,8 @@ clientPort = SYN_REQ[0].sport
 serverPort = SYN_REQ[0].dport
 clientIp = SYN_REQ[0][IP].src
 serverIp = SYN_REQ[0][IP].dst
+
+log(clientIp, serverIp, SYN_REQ[0].flags, SYN_REQ[0].seq, SYN_REQ[0].ack)
 
 ip = IP(src=serverIp, dst=clientIp)
 
