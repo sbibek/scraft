@@ -2,7 +2,7 @@ from scapy.all import *
 
 
 def log(_from, _to, msg, seq, ack) :
-    print("{} {} {} {} {}".format(_from, _to, msg, seq, ack))
+    print("{}->{} flag: {} seq: {} ack: {}".format(_from, _to, msg, seq, ack))
 
 # first sniff for the syn request
 SYN_REQ = sniff(
