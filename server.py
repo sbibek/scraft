@@ -24,6 +24,20 @@ log(serverIp, clientIp, "SA", SYN_REQ[0].seq, SYN_REQ[0].seq+1)
 SYNACK = TCP(sport=serverPort, dport=clientPort, flags="SA",
              seq=SYN_REQ[0].seq, ack=SYN_REQ[0].seq + 1, options=[('MSS', 1460)])
 ack_response = sr1(ip/SYNACK)
+
 # log this response
 log(clientIp, serverIp, ack_response[0][TCP].flags, ack_response[0].seq, ack_response[0].ack)
 
+
+
+
+
+## now lets close the connection
+fin_seq = ack_response[0].ack
+fin_ack = ack_response[0].seq + 1
+
+
+FIN=TCP(sport=serverPort, dport=clientPort, flags="FA", seq=fin_seq, ack=fin_ack)
+FINACK=sr1(ip/FIN)
+LASTACK=TCP(sport=serverPort, dport=clientPort, flags="A", seq=FINACK.ack, ack=FINACK.seq + 1)
+send(ip/LASTACK)
