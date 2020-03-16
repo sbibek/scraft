@@ -32,11 +32,10 @@ log(clientIp, serverIp, ack_response[0][TCP].flags,
     ack_response[0].seq, ack_response[0].ack)
 
 pa_response = ack_response
-for i in range(3):
-    data = TCP(sport=serverPort, dport=clientPort, flags="PA",
-               seq=pa_response[0].ack, ack=pa_response[0].seq, options=[('MSS', 1460)])
-    pa_response = sr1(ip/data/"testing{}\n".format(i))
-    time.sleep(1)
+data = TCP(sport=serverPort, dport=clientPort, flags="PA",
+           seq=pa_response[0].ack, ack=pa_response[0].seq, options=[('MSS', 1460)])
+pa_response = sr1(ip/data/"testing{}\n".format(i))
+time.sleep(1)
 
 
 ## now lets close the connection
