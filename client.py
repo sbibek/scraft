@@ -20,12 +20,14 @@ ACK = TCP(sport=sport, dport=dport, flags='A',
           seq=SA[0].ack, ack=SA[0].seq + 1)
 send(ip/ACK)
 
-for i in range(3):
-    PA = sniff(
-        count=1, filter="tcp and port 3333")
-    # we have to acknowledge PA packet
-    print(PA[0].load)
-    # ack = TCP(sport=sport, dport=dport, flags='A', seq = PA[0].ack, ack=PA[0].seq+)
+PA = sniff(
+    count=1, filter="tcp and port 3333")
+# we have to acknowledge PA packet
+print(PA[0].load)
+pack = TCP(sport=sport, dport=dport, flags='A', seq = PA[0].ack, ack=PA[0].seq+len(PA[0].load))
+send(ip/pack)
+
+
 # PA = ACK
 # for i in range(3):
 
