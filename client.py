@@ -29,7 +29,7 @@ send(ip/pack)
 
 # now we expect FIN
 FA = sniff(count=1, filter="tcp and port 3333" )
-# we will send ACK and then FA
+# FA
 #send(ip/TCP(sport=sport, dport=dport, flags='FA', seq = FA[0].ack, ack=FA[0].seq+1))
 lastAck = sr1(ip/TCP(sport=sport, dport=dport,flags='FA', seq=FA[0].ack, ack=FA[0].seq+1))
 lastAck.show()
