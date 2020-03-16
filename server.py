@@ -31,6 +31,7 @@ ack_response = sr1(ip/SYNACK)
 log(clientIp, serverIp, ack_response[0][TCP].flags,
     ack_response[0].seq, ack_response[0].ack)
 
+time.sleep(3)
 pa_response = ack_response
 data = TCP(sport=serverPort, dport=clientPort, flags="PA",
            seq=pa_response[0].ack, ack=pa_response[0].seq, options=[('MSS', 1460)])
