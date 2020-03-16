@@ -1,5 +1,5 @@
 from scapy.all import *
-
+import time
 
 def log(_from, _to, msg, seq, ack) :
     print("# {}->{} flag: {} seq: {} ack: {}".format(_from, _to, msg, seq, ack))
@@ -28,9 +28,10 @@ ack_response = sr1(ip/SYNACK)
 # log this response
 log(clientIp, serverIp, ack_response[0][TCP].flags, ack_response[0].seq, ack_response[0].ack)
 
-
-data = TCP(sport=serverPort, dport=clientPort, flags="PA", seq=ack_response[0].ack, ack=ack_response[0].seq, options=[('MSS', 1460)])
-pa_response = sr1(ip/data/"testing")
+for i in range(3):
+    data = TCP(sport=serverPort, dport=clientPort, flags="PA", seq=ack_response[0].ack, ack=ack_response[0].seq, options=[('MSS', 1460)])
+    pa_response = sr1(ip/data/"testing{}\n".format(i))
+    time.sleep(1)
 
 
 ## now lets close the connection
