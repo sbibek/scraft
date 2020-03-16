@@ -29,12 +29,13 @@ ack_response = sr1(ip/SYNACK)
 log(clientIp, serverIp, ack_response[0][TCP].flags, ack_response[0].seq, ack_response[0].ack)
 
 
-
+data = TCP(sport=serverPort, dport=clientPort, flags="PA", seq=ack_response[0].ack, ack=ack_response[0].seq, options=[('MSS', 1460)])
+pa_response = sr1(ip/data/"testing")
 
 
 ## now lets close the connection
-fin_seq = ack_response[0].ack
-fin_ack = ack_response[0].seq
+fin_seq = pa_response[0].ack
+fin_ack = pa_response[0].seq
 
 
 FIN=TCP(sport=serverPort, dport=clientPort, flags="FA", seq=fin_seq, ack=fin_ack,options=[('MSS', 1460)] )
