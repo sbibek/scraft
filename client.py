@@ -18,4 +18,10 @@ SA = sr1(ip/SYN)
 # now we send ACK packet
 ACK = TCP(sport=sport, dport=dport, flags='A', seq = SA[0].ack, ack=SA[0].seq + 1 )
 
-SA.show()
+PA = sr1(ip/ACK)
+
+# PA = ACK
+# for i in range(3):
+
+
+PA.show()
