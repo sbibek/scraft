@@ -34,7 +34,7 @@ log(clientIp, serverIp, ack_response[0][TCP].flags,
 pa_response = ack_response
 data = TCP(sport=serverPort, dport=clientPort, flags="PA",
            seq=pa_response[0].ack, ack=pa_response[0].seq, options=[('MSS', 1460)])
-pa_response = sr1(ip/data/"testing{}\n".format(i))
+pa_response = sr1(ip/data/"testing")
 time.sleep(1)
 
 
