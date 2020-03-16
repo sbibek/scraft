@@ -36,17 +36,17 @@ pa_response = ack_response
 data = TCP(sport=serverPort, dport=clientPort, flags="PA",
            seq=pa_response[0].ack, ack=pa_response[0].seq, options=[('MSS', 1460)])
 pa_response = sr1(ip/data/"testing")
-time.sleep(1)
+time.sleep(3)
 
 
-# ## now lets close the connection
-# fin_seq = pa_response[0].ack
-# fin_ack = pa_response[0].seq
+## now lets close the connection
+fin_seq = pa_response[0].ack
+fin_ack = pa_response[0].seq
 
 
-# FIN = TCP(sport=serverPort, dport=clientPort, flags="FA",
-#           seq=fin_seq, ack=fin_ack, options=[('MSS', 1460)])
-# FINACK = sr1(ip/FIN)
-# LASTACK = TCP(sport=serverPort, dport=clientPort, flags="A",
-#               seq=FINACK.ack, ack=FINACK.seq + 1, options=[('MSS', 1460)])
-# send(ip/LASTACK)
+FIN = TCP(sport=serverPort, dport=clientPort, flags="FA",
+          seq=fin_seq, ack=fin_ack, options=[('MSS', 1460)])
+FINACK = sr1(ip/FIN)
+LASTACK = TCP(sport=serverPort, dport=clientPort, flags="A",
+              seq=FINACK.ack, ack=FINACK.seq + 1, options=[('MSS', 1460)])
+send(ip/LASTACK)

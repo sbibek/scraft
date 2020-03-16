@@ -27,6 +27,12 @@ print(PA[0].load)
 pack = TCP(sport=sport, dport=dport, flags='A', seq = PA[0].ack, ack=PA[0].seq+len(PA[0].load))
 send(ip/pack)
 
+# now we expect FIN
+FA = sniff(count=1, filter="tcp and port 3333" )
+# we will send ACK and then FA
+send(ip/TCP(sport=sport, dport=dport, flags='A', seq = FA[0].ack, ack=FA[0].seq+1))
+lastAck = sr1(ip/TCP(sport=sport, dport=dport,flags='FA', seq=FA[0].ack, ack=FA[0].seq+1))
+lastAck.show()
 
 # PA = ACK
 # for i in range(3):
